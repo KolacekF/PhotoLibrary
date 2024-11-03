@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var my_global_variable_F = {}
+    </script>
+    <script>
+        let None = null
+        my_global_variable_F["JSON"] =
+        /*PLACEHOLDER_FOR_DATA_INSERTION*/
+        /*my_global_variable_F["JSON"] = [{'path': 'photos/jester.jpg', 'creation': '2014:03:25 12:03:28', 'name': '007.JPG', 'comment': None, 'gpslat': 50.0194444, 'gpslon': 14.5866667}, {'path': 'photos/test.png', 'creation': '2009:11:25 12:03:28', 'name': '007.JPG', 'comment': None, 'gpslat': 50.2194444, 'gpslon': 14.5566667}, {'path': 'photos/IMG_7483.HEIC', 'creation': '2010:03:25 12:03:28', 'name': 'IMG_7483.HEIC', 'comment': None, 'gpslat': 50.1194444, 'gpslon': 14.5266667}, {'path': 'photos/IMG_7467.HEIC', 'creation': None, 'name': 'IMG_7467.HEIC', 'comment': None, 'gpslat': 50.0394444, 'gpslon': 14.5966667}]
+        */
+    </script>
+    
+    <title>Photo Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.0/MarkerCluster.Default.min.css" />
+    <style>
+        body{
+            /*display: flex;
+            flex-direction: column;*/
+            margin: 0;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+        #map { height: 100vh; z-index: 1;}
+        .popup_wrapper {
+            width: 200px;
+            overflow-y: scroll;
+        }
+        .popup_wrapper img{
+            max-width: 200px;
+            max-height: 200px;
+        }
+        .popup_wrapper div{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .popup_wrapper p{
+            display: inline-block;
+        }
+        .popup_wrapper div button{
+            border-radius: 15px;
+            border: none;
+            background-color: rgb(228, 228, 228);
+        }
+        .popup_wrapper div button::before{
+            content: "?";
+        }
+        .date_wrapper button:active::before, .date_wrapper button:hover::before{
+            content: "datum pořízení";
+        }
+        .path_wrapper button:active::before, .path_wrapper button:hover::before{
+            content: "umístění fotky";
+        }
+
+        #date_buttons_wrapper{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            top: -72px;
+            z-index: 100;
+            overflow-x: scroll;
+            margin: 0;
+            padding: 16px 40px 16px 40px;
+        }
+        #date_buttons_wrapper li{
+            list-style: none;
+            border-radius: 5px;
+            width: 180px;
+            height: 40px;
+            background-color: #2C2C2E;
+            flex-shrink: 0;
+        }
+        #date_buttons_wrapper li :active{
+            transform: translate(5px, 5px);
+        }
+        #date_buttons_wrapper input{
+            display: none;
+        }
+        #date_buttons_wrapper label{
+            cursor: pointer;
+            color: #8E8E93;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            transition: all 0.5s ease;
+        }
+        #date_buttons_wrapper .date_buton_selected label{
+            color: rgb(241, 241, 241);
+            transition: all, ;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <ul id="date_buttons_wrapper"></ul>
+    <script>
+        function Popup(photo){
+            let wrapper = document.createElement("div");
+            let image = document.createElement("img");
+            let date_str = document.createElement("p");
+            let path_str = document.createElement("p");
+
+            image.src = photo["path"];
+            date_str.innerHTML = photo["creation"];
+            path_str.innerHTML = photo["path"];
+
+            let date_wrapper = document.createElement("div");
+            let path_wrapper = document.createElement("div");
+
+            date_wrapper.appendChild(date_str);
+            date_wrapper.appendChild(document.createElement("button"));
+            path_wrapper.appendChild(path_str);
+            path_wrapper.appendChild(document.createElement("button"));
+
+            wrapper.classList.add("popup_wrapper");
+            date_wrapper.classList.add("date_wrapper");
+            path_wrapper.classList.add("path_wrapper");
+
+            wrapper.appendChild(image);
+            wrapper.appendChild(date_wrapper);
+            wrapper.appendChild(path_wrapper);
+
+            return wrapper
+        }
+        my_global_variable_F["Popup"] = Popup;
+
+        const Date_button_fn = (dates_list) => {
+            let visible = false;
+            let markers_local = [];
+            function inner(e){
+                e.target.parentNode.classList.toggle("date_buton_selected");
+
+                if (visible){
+                    markers_local.map((marker) => {
+                        my_global_variable_F["markers"].removeLayer(marker);
+                    })
+                    markers_local.length = 0;
+
+                    visible = !visible;
+                } else{
+                    dates_list.map((photo) => {
+                        let marker = L.marker([photo["gpslat"], photo["gpslon"]]);
+                        marker.bindPopup(my_global_variable_F["Popup"](photo));
+                        /*markers.addLayer(marker);*/
+                        my_global_variable_F["markers"].addLayer(marker);
+
+                        markers_local.push(marker);
+                        })
+                    visible = !visible;
+                }
+            }
+            return inner;
+        }
+
+        function Create_date_buttons(){
+            let json = my_global_variable_F["JSON"];
+            console.log(json);
+            const dates = {
+                "dates":new Set(),
+                /*"set":(date, data) => {
+                    if (this.date == null) {this.date = []}
+                    console.log(this);
+                    this.date.push(data);
+                    this["dates"].add(date);
+                }*/
+                "dates_dict": {},
+                set(date, data) {
+                    if (this.date == null) {this.date = []}
+                    this.date.push(data);
+                    this["dates"].add(date);
+                },
+                set_new(date, data){
+                    if (!(date in this.dates_dict)) {this.dates_dict[date] = []}
+                    this.dates_dict[date].push(data);
+                }
+
+            }
+            json.map((data) => {
+                let date = data["creation"];
+                if (date == null) {
+                    dates.set("no date", data);
+                    dates.set_new("no date", data);
+                    return
+                }
+                let year = date.split(" ")[0].split(":")[0];
+                dates.set(year, data);
+                dates.set_new(year, data);
+            })
+            /*dates["dates"].forEach((string) => {
+                let li = document.createElement("li");
+                let input = document.createElement("input");
+                let label = document.createElement("label");
+
+                input.type = "checkbox";
+                input.value = string;
+                input.id = "date_button" + string;
+                label.htmlFor = "date_button" + string;
+                label.innerHTML = string;
+
+                li.appendChild(input);
+                li.appendChild(label);
+
+                li.classList.add("date_buton_selected");
+                input.oninput = (e) => {Date_button_fn(e, string)};
+                
+                document.getElementById("date_buttons_wrapper").appendChild(li);
+
+
+                /*let button = document.createElement("button");
+                button.innerHTML = string;
+                document.getElementById("date_buttons_wrapper").appendChild(button);   /
+            })*/
+            for (const key in dates["dates_dict"]) {
+                let li = document.createElement("li");
+                let input = document.createElement("input");
+                let label = document.createElement("label");
+
+                input.type = "checkbox";
+                input.value = key;
+                input.id = "date_button" + key;
+                label.htmlFor = "date_button" + key;
+                label.innerHTML = key + " (" + dates["dates_dict"][key].length + ")";
+
+                li.appendChild(input);
+                li.appendChild(label);
+
+                /*li.classList.add("date_buton_selected");*/
+
+                let fn = Date_button_fn(dates["dates_dict"][key]);
+                /*input.oninput = (e) => {fn(e)};*/
+                input.addEventListener("input", function(e){fn(e)});
+                
+                
+                /*input.oninput = (e) => {Date_button_fn(e, dates["dates_dict"].key)};*/
+                
+                document.getElementById("date_buttons_wrapper").appendChild(li);
+            }
+
+            my_global_variable_F["dates"] = dates;
+        }
+
+        Create_date_buttons();
+
+    </script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+    <script>
+        let map = L.map('map').setView([50.0755, 14.4378], 10);  // Starting position and zoom level
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let markers = L.markerClusterGroup()
+        my_global_variable_F["markers"] = markers
+
+        let photos = [
+            {"path": "photos/jester.jpg", "lat": 50.0755, "lon": 14.4378},
+        ];
+
+        /*photos.forEach(function(photo) {
+            //var marker = L.marker([photo.lat, photo.lon]).addTo(map);
+            let marker = L.marker([photo.lat, photo.lon]);
+            //marker.bindPopup("<img src='" + photo.path + "' width='200' /><br />" + photo.path);
+            marker.bindPopup(my_global_variable_F["Popup"](photo));
+
+            markers.addLayer(marker);
+        });*/
+
+        /*my_global_variable_F["JSON"].forEach((photo) => {
+            let marker = L.marker([photo["gpslat"], photo["gpslon"]]);
+            marker.bindPopup(my_global_variable_F["Popup"](photo));
+
+            /*markers.addLayer(marker);   /
+            my_global_variable_F["markers"].addLayer(marker);
+        })*/
+        map.addLayer(my_global_variable_F["markers"]);
+
+
+        let date_buttons_wrapper = document.getElementById("date_buttons_wrapper");
+        for (const child of date_buttons_wrapper.children){
+            for (const element of child.children){
+                if (element.nodeName == "INPUT"){
+                    console.log(element);
+                    console.log(element.checked);
+                    element.checked = true;
+                    element.dispatchEvent(new Event('input', { bubbles: true }));
+                    console.log(element.checked);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
