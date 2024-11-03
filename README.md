@@ -8,6 +8,6 @@
 - `index_photos.py`
 - `create_html.py`
 
-## Structure CREATED
+## Structure CREATED
 - `photo_index.db`
 - `index.html`

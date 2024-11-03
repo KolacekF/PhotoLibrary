@@ -1,5 +1,5 @@
 index_photos.py doesnt take path with spaces
-with promts inside command line, write "press any key to continue..." & drag .db file and press any key...
-in create_html.py, in command line you have to be in working directory. Would be better if it would be fixed 
 Could be written some kind of helper script, that could be triggering index_photos.py and then create_html.py
+
 Choose licence on Github
+before public on github, clear code

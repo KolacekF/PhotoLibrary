@@ -19,7 +19,7 @@ class Index_photos:
 
         #STARTING TESTS
         if not (pathlib.Path(f"{self.folder}/{self.database_name}").is_file()):
-            input(f"{self.database_name} was not found in {self.folder}. Please fix problem and run script again. The script is now closing")
+            input(f"{self.database_name} was not found in {self.folder}. Please fix problem and run script again. The script is now closing. Press any key to continue...")
             return
         
         self.Base__init__()
@@ -32,7 +32,7 @@ class Index_photos:
         self.PruneFiles_list()
         self.NewFiles()
         if (len(self.new_files) > 0):
-            input(f"{len(self.new_files)} files to loged to {self.database_name}")
+            input(f"{len(self.new_files)} files to loged to {self.database_name}. Press any key to continue...")
             self.Exif__init__()
             self.LogNewFiles()
     def Exif__init__(self):
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     #starting_folder_path = input("Set starting position (folder)").strip()
     #starting_folder_path = "/Volumes/CaeMate/photos"
     #a = Index_photos(starting_folder_path)
-    database_path = input("drag .db file to command line").strip()
+    database_path = input("drag .db file to command line; THEN PRESS ANY KEY").strip()
     a = Index_photos(pathlib.Path(database_path).parent, pathlib.Path(database_path).name)
 
     #print(a.files_list)

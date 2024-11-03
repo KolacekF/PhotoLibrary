@@ -11,7 +11,7 @@ def Create_HTML(database_path):
     
     #STARTING TESTS
     if not (pathlib.Path(database_path).is_file()):
-        input(f"{database_name} was not found in {database_path}. Please fix problem and run script again. The script is now closing")
+        input(f"{database_name} was not found in {database_path}. Please fix problem and run script again. The script is now closing. Press any key to continue...")
         return
     
     connection = sqlite3.connect(database_path)
@@ -28,7 +28,7 @@ def Create_HTML(database_path):
         if not (dict(row)["gpslat"] == "None" and dict(row)["gpslon"] == "None"):
             result_list.append(dict(row))
 
-    with open(pathlib.Path("index_TEMPLATE.html"), "r") as file: #ERROR IF SCRIPT IS NOT RUN FROM SPECIFIC PLACE
+    with open(pathlib.Path(pathlib.Path(database_path).parent / "index_TEMPLATE.html"), "r") as file:
         template = file.read()
         print("file TEMPLATE read succesfully")
     template = template.split("/*PLACEHOLDER_FOR_DATA_INSERTION*/")
@@ -42,7 +42,7 @@ def Create_HTML(database_path):
     #print(file_str)
 
 
-    with open("index.html", "w") as file:
+    with open(pathlib.Path(database_path).parent / "index.html", "w") as file:
         file.write(file_str)
         
         #file.write(template[0])
@@ -58,6 +58,6 @@ def Create_HTML(database_path):
 
 
 if __name__ == "__main__":
-    database_path = input("drag .db file to command line").strip()
+    database_path = input("drag .db file to command line; THEN PRESS ANY KEY").strip()
     Create_HTML(database_path)
     print("file index.html succesfully created - END OF SCRIPT")
