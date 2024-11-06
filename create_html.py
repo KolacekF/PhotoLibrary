@@ -6,8 +6,9 @@ import pathlib
 import sqlite3
 from datetime import datetime
 
-def Create_HTML(database_path):
+def Create_HTML(database_path, html_filename, base_path = None):
     database_name = pathlib.Path(database_path).name
+    if base_path == None: base_path = database_path
     
     #STARTING TESTS
     if not (pathlib.Path(database_path).is_file()):
@@ -28,7 +29,7 @@ def Create_HTML(database_path):
         if not (dict(row)["gpslat"] == "None" and dict(row)["gpslon"] == "None"):
             result_list.append(dict(row))
 
-    with open(pathlib.Path(pathlib.Path(database_path).parent / "index_TEMPLATE.html"), "r") as file:
+    with open(pathlib.Path(pathlib.Path(base_path) / "index_TEMPLATE.html"), "r") as file:
         template = file.read()
         print("file TEMPLATE read succesfully")
     template = template.split("/*PLACEHOLDER_FOR_DATA_INSERTION*/")
@@ -42,7 +43,7 @@ def Create_HTML(database_path):
     #print(file_str)
 
 
-    with open(pathlib.Path(database_path).parent / "index.html", "w") as file:
+    with open(pathlib.Path(database_path).parent / html_filename, "w") as file:
         file.write(file_str)
         
         #file.write(template[0])
@@ -59,5 +60,5 @@ def Create_HTML(database_path):
 
 if __name__ == "__main__":
     database_path = input("drag .db file to command line; THEN PRESS ANY KEY").strip()
-    Create_HTML(database_path)
+    Create_HTML(database_path, "index.html")
     print("file index.html succesfully created - END OF SCRIPT")
