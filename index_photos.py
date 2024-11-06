@@ -58,7 +58,7 @@ class Index_photos:
         cursor = connection.cursor()
         cursor.execute("SELECT path FROM photos")
         loged_files = cursor.fetchall()
-        print(f"loged_files: {loged_files}")
+        print(f"loged_files: {loged_files if len(loged_files)<10 else len(loged_files)}") #IF logged_files will be >10, show only .length
         cursor.close()
         connection.close()
         
@@ -68,8 +68,16 @@ class Index_photos:
                 self.new_files.append(file)
         #if there are some file in .db, choose which to copy from self.files_list_pruned to self.new_files
         for file_logged in loged_files:
+            already_logged = False
+            file_found_rel_path = None
             for file_found in self.files_list_pruned:
-                if not (str(file_logged) == str(file_found)): self.new_files.append(file_found) #compare this list with self.files_list_pruned and save only new one (which arent in .db) to self.files_list_new
+                file_found_rel_path = os.path.relpath(file_found, self.folder)
+
+                if (str(file_logged[0]) == str(file_found_rel_path)): already_logged = True #compare this list with self.files_list_pruned and save only new one (which arent in .db) to self.files_list_new
+
+            if not already_logged: self.new_files.append(file_found_rel_path)
+
+        print(f"{len(self.new_files)} new files were updated to `{self.database_name}`.")
 
     def LogNewFiles(self):
         #for every self.files_list_new run exif method
