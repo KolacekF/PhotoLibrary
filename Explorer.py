@@ -36,8 +36,9 @@ class Explorer:
         print("______________________________")
         print(self.path())
         print("Q for quit; S for start; U for one level up")
+        if (pathlib.Path(self.path()) / "photo_index.db").is_file(): print("`photo_index.db` found. START?")
         files = self.scan()
-        print(files)
+        print(f"folders: {files}")
         x = input() #x is string
         if x == "Q": #I have to old python for match - case
             return 0

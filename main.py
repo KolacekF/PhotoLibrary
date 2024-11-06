@@ -1,12 +1,13 @@
-from Explorer import Explorer, ExplorerNew
-from index_photos import Index_photos
-from create_html import Create_HTML
 import pathlib
 import shutil
-
+try:
+    from Explorer import Explorer, ExplorerNew
+    from index_photos import Index_photos
+    from create_html import Create_HTML
+except ImportError:
+    print("Error when importing python modules")
 
 import os
-
 
 
 #e = Explorer()
@@ -34,6 +35,7 @@ def main():
     if query("N", "New", "U", "Update") == "N":
         input(f"in next step, choose path, where the base folder is. Press any key to continue..")
         setPath = e.start()
+        if setPath == 0: print("Quiting"); return #if quited from explorer, return is =0
         if testFileExists(setPath, html, False): #test if index.html already exists (it should not when creating new)
             print(f"in choosen `{html}` already exist, didn`t you want to Update? Do you want to continue?")
             if query("C", "Continue", "Q", "Quit") == "Q": #else quit because .html file already exists
@@ -43,14 +45,19 @@ def main():
     else:
         input(f"in next step, choose path, in which `{db}` and `{html}` are saved. Press any key to continue..")
         setPath = e.start()
+        if setPath == 0: print("Quiting"); return #if quited from explorer, return is =0
 
     testFileExists(setPath, db) #test if .db file exists in given path
 
     #INDEX_PHOTOS.PY
+    print("---START of index_photos.py")
     a = Index_photos(setPath, db)
+    print("---END of index_photos.py")
 
     #CREATE_HTML.PY
+    print("---START of create_html.py")
     Create_HTML(pathlib.Path(setPath) / db, html, basePath)
+    print("---END of create_html.py")
 
 
 
