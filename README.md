@@ -55,6 +55,7 @@ can be saved anywhere on computer. After use can be deleted or moved somewhere e
 - `Explorer.py` - navigate to your desired location. `S` will return created path
 ```bash
 ______________________________
+----Explorer-iteration:-1-----
 /Users/user/Desktop/dbPhotos/folder         #current path
 Q for quit; S for start; U for one level up #controling the script
 folders: {1: 'subfolder'}                   #list of folders

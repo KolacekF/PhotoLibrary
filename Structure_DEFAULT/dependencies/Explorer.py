@@ -5,6 +5,7 @@ class Explorer:
     def __init__(self):
         self.dot = "."
         self.workingPath = []
+        self.iteration= 0
 
     #accepts string, name of subfolder, which to go in
     def downLevel(self, l):
@@ -33,12 +34,14 @@ class Explorer:
     
     #print() commands, current directory tree and dictionary of scaned files
     def start(self):
+        self.iteration += 1
         print("______________________________")
+        print(f"Explorer-iteration:-{self.iteration}".center(30, "-"))
         print(self.path())
-        print("Q for quit; S for start; U for one level up")
+        print("   Q for quit; S for start; U for one level up")
         if (pathlib.Path(self.path()) / "photo_index.db").is_file(): print("`photo_index.db` found. START?")
         files = self.scan()
-        print(f"folders: {files}")
+        print(f"   folders: {files}")
         x = input() #x is string
         if x == "Q": #I have to old python for match - case
             return 0
