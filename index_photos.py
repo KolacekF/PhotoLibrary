@@ -32,7 +32,7 @@ class Index_photos:
         self.PruneFiles_list()
         self.NewFiles()
         if (len(self.new_files) > 0):
-            input(f"{len(self.new_files)} files to loged to {self.database_name}. Press any key to continue...")
+            input(f"{len(self.new_files)} files about to be loged to {self.database_name}. Press any key to continue...")
             self.Exif__init__()
             self.LogNewFiles()
     def Exif__init__(self):
@@ -77,7 +77,6 @@ class Index_photos:
 
             if not already_logged: self.new_files.append(file_found_rel_path)
 
-        print(f"{len(self.new_files)} new files were updated to `{self.database_name}`.")
 
     def LogNewFiles(self):
         #for every self.files_list_new run exif method

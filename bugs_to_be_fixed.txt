@@ -1,5 +1,5 @@
-index_photos.py doesnt take path with spaces
-Could be written some kind of helper script, that could be triggering index_photos.py and then create_html.py
+if files are deleted, also delete them from database and let it know the user
+add "dependiences" folder and put all modules, .html, .db in here (and modify main.py)
 
 Choose licence on Github
 before public on github, clear code

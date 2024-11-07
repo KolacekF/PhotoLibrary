@@ -47,7 +47,8 @@ def main():
         setPath = e.start()
         if setPath == 0: print("Quiting"); return #if quited from explorer, return is =0
 
-    testFileExists(setPath, db) #test if .db file exists in given path
+    if not testFileExists(setPath, db): #test if .db file exists in given path
+        return
 
     #INDEX_PHOTOS.PY
     print("---START of index_photos.py")
