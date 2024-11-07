@@ -1,9 +1,9 @@
 import pathlib
 import shutil
 try:
-    from Explorer import Explorer, ExplorerNew
-    from index_photos import Index_photos
-    from create_html import Create_HTML
+    from dependencies.Explorer import Explorer, ExplorerNew
+    from dependencies.index_photos import Index_photos
+    from dependencies.create_html import Create_HTML
 except ImportError:
     print("Error when importing python modules")
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     html = "index.html" #default name of index.html
     db = "photo_index.db" #default name of database
     #AUTOMATICALLY DEFINED VARIABLES
-    basePath = pathlib.Path(__file__).parent
+    basePath = pathlib.Path(__file__).parent / "dependencies"
 
 
     if integrityTests():
