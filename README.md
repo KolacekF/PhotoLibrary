@@ -5,15 +5,16 @@
 - Data are being saved from exif and gps data stored inside of photos files
 - Photos (and created `idnex.html`) can be stored on external drive. May not work with symlinks
 - Only `photo_index.db` and `index.html` are being created, nothing more. These hold only paths to original photos. The photos are not being copied, transfered or anything else 
-- **UseCase**: When you have old photos stored on external drives, you can discover old forgotten moments by browsing all photos on the map.
+- **<ins>UseCase</ins>**: When you have old photos stored on external drives, you can discover old forgotten moments by browsing all photos on the map.
 
-## Supported extensions
-- "jpg", "jpeg","png", "HEIC", "HEIF"
+### Supported extensions
+- `.jpg`, `.jpeg`,`.png`, `.HEIC`, `.HEIF`
 
 ## How to use
 1. Download `Structure Default` to some path in your computer. It can be any place, preferably for example Documents
 2. In command line, run the `main.py` (write `python ` or `python3 ` + `path_to_file` (for example drag the `main.py` to command line))
-    - for example ```bash
+    - for example
+    ```bash
     python3 ~/Downloads/folder/main.py
     ```
 3. For first use for every diferent set of subolders, choose to create New, then choose to Update
@@ -38,10 +39,11 @@ BASE FOLDER             #choose this folder as a place for two created files
 │       ├── IMG1.HEIF
 │       ├── IMG345.HEIC
 │       └── photo1.jpg
-└── random
+├── random
 │   ├── IMG345.HEIC
 │   ├── photo1.jpg
 │   └── photo2.jpg
+│
 ├── photo_index.db      #created in BASE FOLDER
 └── index.html          #created in BASE FOLDER
 ```
@@ -55,7 +57,7 @@ can be saved anywhere on computer. After use can be deleted or moved somewhere e
 ______________________________
 /Users/user/Desktop/dbPhotos/folder         #current path
 Q for quit; S for start; U for one level up #controling the script
-folders: {1: 'subfolder'}                    #list of folders
+folders: {1: 'subfolder'}                   #list of folders
 1                                           #you choose a folder by number
 ```
 - `photo_index_TEMPLATE.db` - template of database. `main.py` automatically copies it to chosen folder on new creation
