@@ -27,14 +27,24 @@ class Index_photos:
         self.files_list = [] #saving path of all files in subdirectories
         self.files_list_pruned = [] #only files based on naming rules
         self.new_files = [] #only files, that are not in .db
+        self.old_files = [] #only files, that are in .db (and not found = list_pruned)
 
         self.FolderWalk()
         self.PruneFiles_list()
-        self.NewFiles()
+        #self.NewFiles()
+        self.UpdateFiles()
         if (len(self.new_files) > 0):
             input(f"{len(self.new_files)} files about to be loged to {self.database_name}. Press any key to continue...")
             self.Exif__init__()
             self.LogNewFiles()
+        else:
+            print(f"{len(self.new_files)} NEW files in {self.database_name}")
+        if (len(self.old_files) > 0):
+            input(f"{len(self.old_files)} files about to be unloged from {self.database_name}. Press any key to continue...")
+            self.UnlogOldFiles()
+        else:
+            print(f"{len(self.old_files)} OLD files in {self.database_name}.")
+
     def Exif__init__(self):
         register_heif_opener()
 
@@ -52,7 +62,7 @@ class Index_photos:
             if self.TestFileName(file.name): #returning true/false based on rules for file naming
                 self.files_list_pruned.append(file)
 
-    def NewFiles(self):
+    def NewFiles(self): #METHOD NOT USED ANYMORE. CAN BE DELETED (10.11.2024)
         #query database and list all files paths
         connection = sqlite3.connect(f"{self.folder}/{self.database_name}")
         cursor = connection.cursor()
@@ -77,6 +87,36 @@ class Index_photos:
 
             if not already_logged: self.new_files.append(file_found_rel_path)
 
+    def UpdateFiles(self):
+        #query database and list all files paths
+        connection = sqlite3.connect(f"{self.folder}/{self.database_name}")
+        cursor = connection.cursor()
+        cursor.execute("SELECT path FROM photos")
+        loged_files = cursor.fetchall()
+        print(f"photo files found: {loged_files if len(loged_files)<10 else len(loged_files)}") #IF logged_files will be >10, show only .length
+        cursor.close()
+        connection.close()
+
+        #compare self.files_list_pruned and logged_files; THEN fill accordingly self.new_files and self.old_files
+        loged_files_FLAT = []
+        files_found_rel_path_FLAT = []
+        #fill variables
+        for file_logged in loged_files: #fill loged_files_FLAT
+            loged_files_FLAT.append(pathlib.Path(file_logged[0]))
+        for file_found in self.files_list_pruned: #fill files_found_rel_path_FLAT
+            files_found_rel_path_FLAT.append(file_found.relative_to(self.folder))
+            #files_found_rel_path_FLAT.append(os.path.relpath(file_found, self.folder))
+
+        #tests and assignment
+        #new files to be logged
+        for file_found in files_found_rel_path_FLAT:
+            if file_found not in loged_files_FLAT:
+                self.new_files.append(file_found)
+        #old files  to be deleted
+        for file_logged in loged_files_FLAT:
+            if file_logged not in files_found_rel_path_FLAT:
+                self.old_files.append(file_logged)                
+
 
     def LogNewFiles(self):
         #for every self.files_list_new run exif method
@@ -97,6 +137,19 @@ class Index_photos:
             lon_string = "lon"
             message = cursor.execute((f"INSERT INTO photos (path, creation, name, gpslat, gpslon) VALUES ('{rel_path}','{file.date}','{file.name}','{file.gpsDD[lat_string]}','{file.gpsDD[lon_string]}')").replace('\0',''))
             #print(f"INSERT INTO photos message: {message.fetchall()}")
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+    def UnlogOldFiles(self):
+        #unlog old data from database
+        connection = sqlite3.connect(f"{self.folder}/{self.database_name}")
+        cursor = connection.cursor()
+
+        for file in self.old_files:
+            message = cursor.execute(f"DELETE FROM photos WHERE path = '{file}'")
+            print(message)
+
         connection.commit()
         cursor.close()
         connection.close()
