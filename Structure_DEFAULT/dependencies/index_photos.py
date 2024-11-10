@@ -115,14 +115,14 @@ class Index_photos:
         #old files  to be deleted
         for file_logged in loged_files_FLAT:
             if file_logged not in files_found_rel_path_FLAT:
-                self.old_files.append(file_logged)                
+                self.old_files.append(file_logged) 
 
 
     def LogNewFiles(self):
         #for every self.files_list_new run exif method
         i = 0
         for file in self.new_files:
-            self.Log_exif(file, i)
+            self.Log_exif((pathlib.Path(self.folder) / file), i)
             i += 1
 
         #log new exif data to database
@@ -148,7 +148,6 @@ class Index_photos:
 
         for file in self.old_files:
             message = cursor.execute(f"DELETE FROM photos WHERE path = '{file}'")
-            print(message)
 
         connection.commit()
         cursor.close()
