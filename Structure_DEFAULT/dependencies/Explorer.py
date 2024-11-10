@@ -54,7 +54,7 @@ class Explorer:
             self.downLevel(files[int(x)])
             return self.start()
         else:
-            self.start()
+            return self.start()
         
 
 class ExplorerNew(Explorer):
