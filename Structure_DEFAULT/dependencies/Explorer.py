@@ -42,17 +42,19 @@ class Explorer:
         if (pathlib.Path(self.path()) / "photo_index.db").is_file(): print("`photo_index.db` found. START?")
         files = self.scan()
         print(f"   folders: {files}")
-        x = input() #x is string
+        x = input().upper() #x is string
         if x == "Q": #I have to old python for match - case
             return 0
-        if x == "S":
+        elif x == "S":
             return self.path()
         elif x == "U":
             self.upLevel()
             return self.start()
-        else:
+        elif x.isnumeric():
             self.downLevel(files[int(x)])
             return self.start()
+        else:
+            self.start()
         
 
 class ExplorerNew(Explorer):
