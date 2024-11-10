@@ -1,4 +1,3 @@
-if files are deleted, also delete them from database and let it know the user
 
 Choose licence on Github
 before public on github, clear code

@@ -9,6 +9,15 @@
 
 ### Supported extensions
 - `.jpg`, `.jpeg`,`.png`, `.HEIC`, `.HEIF`
+### required python modules
+```bash
+python3 --version
+```
+- `python 3.4` or newer
+```bash
+pip install 
+```
+- `sqlite3`, `Pillow` , `pillow_heif`
 
 ## How to use
 1. Download `Structure Default` to some path in your computer. It can be any place, preferably for example Documents
