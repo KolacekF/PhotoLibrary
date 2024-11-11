@@ -64,9 +64,9 @@ def main():
 
 def query(a, aString, b, bString):
     answer = input(str(a) + " " + aString + ";   " + str(b) + " " + bString + " : ")
-    if answer == a:
+    if answer.lower() == a.lower():
         return a
-    elif answer == b:
+    elif answer.lower() == b.lower():
         return b
     else:
         return query(a, aString, b, bString)

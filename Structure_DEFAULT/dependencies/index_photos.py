@@ -122,7 +122,10 @@ class Index_photos:
         #for every self.files_list_new run exif method
         i = 0
         for file in self.new_files:
-            self.Log_exif((pathlib.Path(self.folder) / file), i)
+            try:
+                self.Log_exif((pathlib.Path(self.folder) / file), i)
+            except Exception as e:
+                print(f"{type(e).__name__} - {file} - {e}")
             i += 1
 
         #log new exif data to database
@@ -202,7 +205,7 @@ class File:
         try:
             self.date = self.exif[306]
         except:
-            print(f"file {self.pathOBJ} has no DATE info")
+            #print(f"file {self.pathOBJ} has no DATE info")
             self.date = None
 
         self.gpsDD = {"lat": None, "lon": None}
