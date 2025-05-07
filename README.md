@@ -22,7 +22,7 @@ pip install
 - `sqlite3`, `Pillow` , `pillow_heif`
 
 ## How to use
-1. Download `Structure Default` to some path in your computer. It can be any place, preferably for example Documents
+1. Download `Structure_DEFAULT` to some path in your computer. It can be any place, preferably for example Documents
 2. In command line, run the `main.py` (write `python ` or `python3 ` + `path_to_file` (for example drag the `main.py` to command line))
     - for example
     ```bash
