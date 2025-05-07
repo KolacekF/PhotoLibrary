@@ -1,7 +1,5 @@
 #ask, what path to create html in. If no parametr, take current path in which .py file is
-#dont forget to show in html date of creation and last update
-#would be great, if in html would be button, for date to choose from
-    #will be created more .html files, then they would show only certain files on map API
+#dont forget to show in html date of creation and last update - NOT YET IMPLEMENTED
 import pathlib
 import sqlite3
 from datetime import datetime
@@ -46,16 +44,7 @@ def Create_HTML(database_path, html_filename, base_path = None):
     with open(pathlib.Path(database_path).parent / html_filename, "w") as file:
         file.write(file_str)
         
-        #file.write(template[0])
-
-        #file.write("[")
-        #for x in result_list:
-        #    file.write(x)
-        #file.write("]")
-        #file.write(str(result_list))
-
-        #file.write(template[1])
-    print("file written")
+    print(f"file {html_filename} successfully written")
 
 
 if __name__ == "__main__":

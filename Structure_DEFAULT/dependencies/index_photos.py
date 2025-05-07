@@ -9,7 +9,7 @@ import datetime
 class Index_photos:
     def __init__(self, starting_folder, database_filename):
         #SET STARTING FOLDER
-        self.folder = starting_folder #"/Volumes/CaeMate/photos" #ABSOLUTE PATH FOR STARTING FOLDER WITH PHOTOS AND .db
+        self.folder = starting_folder #ABSOLUTE PATH FOR STARTING FOLDER WITH PHOTOS AND .db
         #self.database_name = "photo_index.db" #NAME OF .db FILE
         self.database_name = database_filename #NAME OF .db FILE
         #NAMING RULES
@@ -133,13 +133,11 @@ class Index_photos:
         cursor = connection.cursor()
         date_format = "%Y-%m-%d %H:%M:%S"
         message = cursor.execute(f"INSERT INTO log (modified, count) VALUES('{datetime.datetime.now().strftime(date_format)}', '{len(self.filesOBJ)}')")
-        #print(f"INSERT INTO log message: {message.fetchall()}")
         for file in self.filesOBJ:
             rel_path = os.path.relpath(file.pathOBJ, self.folder)
             lat_string = "lat"
             lon_string = "lon"
             message = cursor.execute((f"INSERT INTO photos (path, creation, name, gpslat, gpslon) VALUES ('{rel_path}','{file.date}','{file.name}','{file.gpsDD[lat_string]}','{file.gpsDD[lon_string]}')").replace('\0',''))
-            #print(f"INSERT INTO photos message: {message.fetchall()}")
         connection.commit()
         cursor.close()
         connection.close()
