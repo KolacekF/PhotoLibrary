@@ -1,19 +1,21 @@
 # Photo library
 ![web browser screenshot of map](examples/example-map.png)
 ## Main goal (UseCase)
+- **<ins>UseCase</ins>**: When you have old photos stored on external drives, you can discover old forgotten moments by browsing all photos on the map.
+
 - When you have many photos in different subfolders, you can browse them all in one place, by GPS locations, also you can filter photos by dates
 - Data are being saved from exif and gps data stored inside of photos files
 - Photos (and created `idnex.html`) can be stored on external drive. May not work with symlinks
 - Only `photo_index.db` and `index.html` are being created, nothing more. These hold only paths to original photos. The photos are not being copied, transfered or anything else 
-- **<ins>UseCase</ins>**: When you have old photos stored on external drives, you can discover old forgotten moments by browsing all photos on the map.
 
 ### Supported extensions
 - `.jpg`, `.jpeg`,`.png`, `.HEIC`, `.HEIF`
-### required python modules
+### required python version
 ```bash
 python3 --version
 ```
 - `python 3.4` or newer
+### required python modules
 ```bash
 pip install 
 ```
@@ -26,8 +28,8 @@ pip install
     ```bash
     python3 ~/Downloads/folder/main.py
     ```
-3. For first use for every diferent set of subolders, choose to create New, then choose to Update
-4. When you will be asked to choose the path, **choose the top folder above all subfolders containing photos**. All photos in all subdirectories and also in chosen folder will be indexed and then shown in given `index.html` file.
+   - For first use for every diferent set of subolders, choose to create New, then choose to Update
+   - When you will be asked to choose the path, **choose the top folder above all subfolders containing photos**. All photos in all subdirectories and also in chosen folder will be indexed and then shown in given `index.html` file.
 ```bash
 BASE FOLDER             #choose this folder as a place for two created files
 ├── Family
