@@ -9,3 +9,6 @@
 photos/
 index.html
 photo_index.db
+
+#allow demo folder
+!demo/*
