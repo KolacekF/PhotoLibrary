@@ -1,5 +1,5 @@
 # Photo library
-![web browser screenshot of map](examples/example-map.png)
+![folder wiev with map](examples/example-purpose.png)
 ## Main goal (UseCase)
 - **<ins>UseCase</ins>**: When you have old photos stored on external drives, you can discover old forgotten moments by browsing all photos on the map.
 
