@@ -1,9 +1,3 @@
-#ignore .DS_Store
-.DS_Store
-
-#ignore .vscode folder
-.vscode/
-
 #ignore personal data
 #ignore .photos folder
 photos/
@@ -12,3 +6,12 @@ photo_index.db
 
 #allow demo folder
 !demo/*
+
+#IGNORE IN EVERY FOLDER
+
+#ignore .DS_Store
+.DS_Store
+
+#ignore .vscode folder
+.vscode/
+
